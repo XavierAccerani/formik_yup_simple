@@ -5,10 +5,16 @@ const INITIAL_VALUE = {
   partners: [],
 };
 
+const PARTNER_MODEL = {
+  name: '',
+  marriage: '',
+  spouse_name: '',
+};
+
 const UserContext = React.createContext(INITIAL_VALUE);
 
 const UserProvider = UserContext.Provider;
 
 const UserConsumer = UserContext.Consumer;
 
-export { UserProvider, UserConsumer };
+export { UserProvider, UserConsumer, INITIAL_VALUE, PARTNER_MODEL };

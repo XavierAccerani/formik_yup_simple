@@ -1,47 +1,105 @@
-import React from 'react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-// import FormikForm from './components/FormikForm';
-// import DemanderNom from './pages/demandeNom';
-// import DemanderMari from './pages/demandeMari';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
-import MontrerRecap from './pages/recapPlus';
+import React, { useState } from 'react';
+import { Container, Typography } from '@material-ui/core';
+import { Route, Switch, useHistory } from 'react-router-dom';
 
-import { UserProvider } from './pages/userContext';
+import {
+  UserProvider,
+  INITIAL_VALUE,
+  PARTNER_MODEL,
+} from './context/UserContext';
+
+import MontrerRecap from './pages/recapPlus';
 import DemanderNom from './pages/demandeNom';
 import DemanderMari from './pages/demandeMari';
 
-// if (pages === '' && values.mariage === 'oui') {
-//   nextpage = { DemanderMari };
-// }
-// if (pages === '' && values.mariage === 'non') {
-//   nextpage = { MontrerRecap };
-// }
+const App = () => {
+  const [formValues, setFormValues] = useState(INITIAL_VALUE);
+  const history = useHistory();
 
-// const App = () => (
-function App() {
+  const handleAddNewParnter = () => {
+    console.log('handleAddNewParnter');
+    const { partners } = formValues;
+    partners.push(PARTNER_MODEL);
+    setFormValues({
+      partnerIndex: partners.length - 1,
+      partners,
+    });
+    // navigate to user input
+    return history.push('/demandeNom');
+  };
+
+  const handleSubmitNewPartner = (values, actions) => {
+    console.log('handle submit new partner with ', values);
+    const { partners, partnerIndex } = formValues;
+    partners[partnerIndex] = { ...partners[partnerIndex], ...values };
+    setFormValues({
+      ...formValues,
+      partners,
+    });
+
+    actions.setSubmitting(false);
+    if (values.mariage === 'oui') {
+      return history.push('/demandeMari');
+    }
+    return history.push('/');
+  };
+
+  const handleSubmitSpouse = (values, actions) => {
+    console.log('handle submit spuse with ', values);
+    const { partners, partnerIndex } = formValues;
+    partners[partnerIndex] = { ...partners[partnerIndex], ...values };
+    setFormValues({
+      ...formValues,
+      partners,
+    });
+
+    actions.setSubmitting(false);
+    return history.push('/');
+  };
+
   return (
-    <Router>
-      <Container maxWidth="md">
-        <Box my={4} width={1}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Mini projet
-          </Typography>
-          {/* <UserProvider value="hello future me :)"> */}
-          <UserProvider>
-            <switch>
-              <Route path="/" component={MontrerRecap} />
-              {/* <Route path="/pages/recapPlus" component={MontrerRecap} /> */}
-              <Route path="/pages/demandeNom" component={DemanderNom} />
-              <Route path="/pages/demandeMari" component={DemanderMari} />
-            </switch>
-          </UserProvider>
-          {/* <FormikForm /> */}
-        </Box>
-      </Container>
-    </Router>
+    <Container maxWidth="md">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Mini projet
+      </Typography>
+      <UserProvider value={formValues}>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={(props) => (
+              <MontrerRecap
+                handleAddNewParnter={handleAddNewParnter}
+                {...props}
+              />
+            )}
+          />
+
+          <Route
+            exact
+            path="/demandeNom"
+            render={(props) => (
+              <DemanderNom
+                handleSubmitNewPartner={handleSubmitNewPartner}
+                {...props}
+              />
+            )}
+          />
+
+          <Route
+            exact
+            path="/demandeMari"
+            render={(props) => (
+              <DemanderMari
+                handleSubmitSpouse={handleSubmitSpouse}
+                {...props}
+              />
+            )}
+          />
+        </Switch>
+      </UserProvider>
+    </Container>
   );
-}
+};
 
 export default App;

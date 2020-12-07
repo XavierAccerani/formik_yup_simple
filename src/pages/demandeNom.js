@@ -1,143 +1,84 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import { Formik, Field, useFormikContext } from 'formik';
+import PropTypes from 'prop-types';
+import { Formik, Field, Form } from 'formik';
 
 import { TextField, RadioGroup } from 'formik-material-ui';
-// import { Box } from '@material-ui/core';
-
-// ompport pour l'ajout de la checkbox
 import * as Yup from 'yup';
 
 import {
+  FormControl,
   FormControlLabel,
+  FormLabel,
   Radio,
   Box,
   Button,
-  Typography,
+  FormHelperText,
 } from '@material-ui/core';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
-
-import DemanderMari from './demandeMari';
-// import MontrerRecap from './recapPlus';
-
-// fin ajout de la checkbox
 
 const validationSchema = Yup.object({
-  name: Yup.string()
-    // .name('entrez un nom')
-    .required('Le nom est '),
-  mariage: Yup.string('')
-    // .mariage('')
-    .required('Une réponse est nécessaire'),
-  //   password: Yup
-  //     .string('Enter your password')
-  //     .min(8, 'Password should be of minimum 8 characters length')
-  //     .required('Password is required'),
+  name: Yup.string().required('Le nom est obligatoire'),
+  mariage: Yup.string('').required('Une réponse est nécessaire'),
 });
 
-const DemanderNom = () => {
-  // const { values } = useFormikContext();
-
-  // const formik = useFormik({
-  //   initialValues: {
-  //     name: '',
-  //     mariage: '',
-  //     //   password: 'foobar',
-  //   },
-  //   validationSchema,
-  //   onSubmit: (values) => {
-  //     alert(JSON.stringify(values, null, 2));
-  //   },
-  // });
-
-  // debut implementation formik tag
-  // const BasicExample = () => (
-
-  // <div>
+const DemanderNom = (props) => {
   return (
-    <Router>
-      <Box>
-        {/* <h1>My Form</h1> */}
+    <Form>
+      <Box display="flex" flexDirection="column">
+        <Field
+          component={TextField}
+          name="name"
+          type="text"
+          label="Nom de l'associé"
+        />
 
-        <Formik
-          initialValues={{
-            name: '',
-            mariage: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(values, actions) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
+        <br />
 
-              actions.setSubmitting(false);
-            }, 1000);
-          }}
-        >
-          {(props) => (
-            <form onSubmit={props.handleSubmit}>
-              <Field
-                component={TextField}
-                name="name"
-                type="text"
-                label="Entrez un nom"
-              />
-
-              <Typography variant="h6">Y a t-il un mariage ?</Typography>
-
-              <Field component={RadioGroup} defaultValue="non" name="mariage">
-                <FormControlLabel value="oui" control={<Radio />} label="Oui" />
-                <FormControlLabel value="non" control={<Radio />} label="Non" />
-              </Field>
-
-              {props.errors.name && (
-                <div id="feedback">{props.errors.name}</div>
-              )}
-              {props.errors.mariage && (
-                <div id="feedback">{props.errors.mariage}</div>
-              )}
-
-              {props.values.mariage === 'oui' && (
-                <Button component={Link} to="/pages/demandeMari">
-                  suivant
-                </Button>
-              )}
-
-              {props.values.mariage === 'non' && (
-                <Button component={Link} to="/pages/recapPlus">
-                  suivant
-                </Button>
-              )}
-            </form>
+        <FormControl component="fieldset" error={props.errors.mariage}>
+          <FormLabel component="legend">Marié</FormLabel>
+          <Field component={RadioGroup} defaultValue="non" name="mariage">
+            <FormControlLabel value="oui" control={<Radio />} label="Oui" />
+            <FormControlLabel value="non" control={<Radio />} label="Non" />
+          </Field>
+          {props.errors.mariage && (
+            <FormHelperText>{props.errors.mariage}</FormHelperText>
           )}
-        </Formik>
+        </FormControl>
+
+        <br />
+
+        <Button
+          onClick={props.handleSubmit}
+          disabled={props.isSubmitting || !props.isValid}
+        >
+          Suivant
+        </Button>
       </Box>
-      {/* <Route path="/pages/demandeNom" component={DemanderNom} /> */}
-      <Route path="/pages/demandeMari" component={DemanderMari} />
-      {/* <Route path="/pages/recapPlus" component={MontrerRecap} /> */}
-    </Router>
+    </Form>
   );
-  /* </div> */
-  // );
-  /* fin implmentation formik tag  */
-
-  //   const { values} = useFormikContext();
-
-  //   return (
-  //     <Box>
-  //       <Field
-  //         component={TextField}
-  //         name="name"
-  //         type="text"
-  //         label="Entrez un nom"
-  //       />
-
-  //       <Typography variant="h6">Y a t-il un mariage ?</Typography>
-
-  //       <Field component={RadioGroup} defaultValue="non" name="mariage">
-  //         <FormControlLabel value="oui" control={<Radio />} label="Oui" />
-  //         <FormControlLabel value="non" control={<Radio />} label="Non" />
-  //       </Field>
-  //     </Box>
-  //   );
 };
 
-export default DemanderNom;
+DemanderNom.propTypes = {
+  handleSubmitNewPartner: PropTypes.func,
+};
+
+const FormikDemanderNom = ({ handleSubmitNewPartner }) => {
+  return (
+    <Formik
+      initialValues={{
+        name: '',
+        mariage: '',
+      }}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmitNewPartner}
+    >
+      {(props) => <DemanderNom {...props} />}
+    </Formik>
+  );
+};
+
+FormikDemanderNom.propTypes = {
+  handleSubmitNewPartner: PropTypes.func,
+};
+
+export default FormikDemanderNom;

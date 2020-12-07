@@ -2,5 +2,4 @@ node_modules/
 build/
 coverage/
 storybook-static/
-/src/reportWebVitals.js
 jsconfig.json
