@@ -22,6 +22,7 @@ const validationSchema = Yup.object({
 });
 
 const DemanderNom = (props) => {
+  console.log(props.values);
   return (
     <Form>
       <Box display="flex" flexDirection="column">
@@ -34,9 +35,12 @@ const DemanderNom = (props) => {
 
         <br />
 
-        <FormControl component="fieldset" error={props.errors.mariage}>
+        <FormControl
+          component="fieldset"
+          error={typeof props.errors.mariage === 'string'}
+        >
           <FormLabel component="legend">Marié</FormLabel>
-          <Field component={RadioGroup} defaultValue="non" name="mariage">
+          <Field component={RadioGroup} name="mariage">
             <FormControlLabel value="oui" control={<Radio />} label="Oui" />
             <FormControlLabel value="non" control={<Radio />} label="Non" />
           </Field>
@@ -62,13 +66,10 @@ DemanderNom.propTypes = {
   handleSubmitNewPartner: PropTypes.func,
 };
 
-const FormikDemanderNom = ({ handleSubmitNewPartner }) => {
+const FormikDemanderNom = ({ handleSubmitNewPartner, initialValues }) => {
   return (
     <Formik
-      initialValues={{
-        name: '',
-        mariage: '',
-      }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmitNewPartner}
     >
@@ -79,6 +80,7 @@ const FormikDemanderNom = ({ handleSubmitNewPartner }) => {
 
 FormikDemanderNom.propTypes = {
   handleSubmitNewPartner: PropTypes.func,
+  initialValues: PropTypes.object,
 };
 
 export default FormikDemanderNom;

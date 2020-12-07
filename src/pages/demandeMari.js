@@ -40,12 +40,10 @@ DemanderMari.propTypes = {
   isValid: PropTypes.bool,
 };
 
-const FormikDemanderMari = ({ handleSubmitSpouse }) => {
+const FormikDemanderMari = ({ handleSubmitSpouse, initialValues }) => {
   return (
     <Formik
-      initialValues={{
-        spouse_name: '',
-      }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmitSpouse}
     >
@@ -56,5 +54,6 @@ const FormikDemanderMari = ({ handleSubmitSpouse }) => {
 
 FormikDemanderMari.propTypes = {
   handleSubmitSpouse: PropTypes.func,
+  initialValues: PropTypes.object,
 };
 export default FormikDemanderMari;
