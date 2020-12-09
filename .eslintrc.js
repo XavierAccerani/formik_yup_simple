@@ -18,7 +18,7 @@ module.exports = {
       },
     },
     react: {
-      version: '16.5', // React version, default to the latest React stable release
+      version: '17.01', // React version, default to the latest React stable release
     },
   },
 };

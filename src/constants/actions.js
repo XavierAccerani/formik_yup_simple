@@ -1,0 +1,3 @@
+export const ADD_PARTNER = 'ADD_PARTNER';
+export const REMOVE_PARTNER = 'REMOVE_PARTNER';
+export const EDIT_PARTNER = 'EDIT_PARTNER';
