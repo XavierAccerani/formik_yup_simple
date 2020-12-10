@@ -18,6 +18,7 @@ const NewPartnerForm = () => {
   ] = useInputState('');
 
   return (
+    // test depuis ubuntu
     // <form
     <formik
       onSubmit={(e) => {
