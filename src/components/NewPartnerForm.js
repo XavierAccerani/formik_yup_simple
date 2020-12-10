@@ -18,7 +18,8 @@ const NewPartnerForm = () => {
   ] = useInputState('');
 
   return (
-    <form
+    // <
+    <formik
       onSubmit={(e) => {
         e.preventDefault();
         dispatch({
@@ -69,7 +70,8 @@ const NewPartnerForm = () => {
         />
       )}
       <button type="submit">submit</button>
-    </form>
+    </formik>
+    {/* </form> */}
   );
 };
 
