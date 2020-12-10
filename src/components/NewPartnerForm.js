@@ -18,7 +18,7 @@ const NewPartnerForm = () => {
   ] = useInputState('');
 
   return (
-    // <
+    // <form
     <formik
       onSubmit={(e) => {
         e.preventDefault();
@@ -30,9 +30,9 @@ const NewPartnerForm = () => {
             spouseName: spouseNameValue,
           },
         });
-        clearNameValue();
-        clearSpouseValue();
-        clearSpouseNameValue();
+        // clearNameValue();
+        // clearSpouseValue();
+        // clearSpouseNameValue();
       }}
       className={classes.PartnerForm}
     >
@@ -71,7 +71,7 @@ const NewPartnerForm = () => {
       )}
       <button type="submit">submit</button>
     </formik>
-    {/* </form> */}
+  {/* </form> */}
   );
 };
 
