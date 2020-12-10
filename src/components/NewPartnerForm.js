@@ -3,6 +3,8 @@ import { DispatchContext } from '../contexts/partners.context';
 import useInputState from '../hooks/useInputState';
 import useStyles from '../styles/PartnerFormStyles';
 import { ADD_PARTNER } from '../constants/actions';
+import { TextField } from 'formik-material-ui';
+import { Formik, Field, Form } from 'formik';
 
 const NewPartnerForm = () => {
   const classes = useStyles();
@@ -17,30 +19,54 @@ const NewPartnerForm = () => {
     clearSpouseNameValue,
   ] = useInputState('');
 
+  const formik = useFormik({
+
+    initialValues={
+      // name: "",
+      // spouse:"",
+      // spouse_name:"",
+      values:""      
+    }
+    
+    onSubmit: values => {
+      console.log(object)
+    }
+  }),
+
+
   return (
     // test depuis ubuntu
-    // <form
-    <formik
-      onSubmit={(e) => {
-        e.preventDefault();
-        dispatch({
-          type: ADD_PARTNER,
-          payload: {
-            name: nameValue,
-            spouse: spouseValue,
-            spouseName: spouseNameValue,
-          },
-        });
-        // clearNameValue();
-        // clearSpouseValue();
-        // clearSpouseNameValue();
-      }}
-      className={classes.PartnerForm}
+    <form onSubmit={formik.handleSubmit}
+    // <formik
+
+    // initialValues={initialValues}
+      // validationSchema={validationSchema}
+      // onSubmit={handleSubmitNewPartner}
+
+      // onSubmit={(e) => {
+      //   e.preventDefault();
+      //   dispatch({
+      //     type: ADD_PARTNER,
+      //     payload: {
+      //       values
+      //     },
+      //   });
+      //   payload: {
+      //       name: nameValue,
+      //       spouse: spouseValue,
+      //       spouseName: spouseNameValue,
+      //     },
+      //     clearNameValue();
+      //     clearSpouseValue();
+      //     clearSpouseNameValue();
+      //   }}
+          className={classes.PartnerForm}
     >
       <input
         placeholder="Nom de l'associé..."
-        value={nameValue}
-        onChange={handleNameChange}
+        value={formik.value.name}
+        // onChange={handleNameChange}
+        onChange={formik.handleChange}
         className={classes.input}
       />
 
@@ -71,8 +97,8 @@ const NewPartnerForm = () => {
         />
       )}
       <button type="submit">submit</button>
-    </formik>
-  {/* </form> */}
+    {/* </formik> */}
+  </form>
   );
 };
 
