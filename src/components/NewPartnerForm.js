@@ -22,16 +22,20 @@ const NewPartnerForm = () => {
   const formik = useFormik({
 
     initialValues={
-      // name: "",
-      // spouse:"",
-      // spouse_name:"",
-      values:""      
-    }
+      name: "",
+      spouse:"non",
+      spouse_name:""
+    },
+
     
     onSubmit: values => {
       console.log(object)
-    }
-  }),
+      dispatch({
+            type: ADD_PARTNER,
+            payload: {
+              values
+      }});}
+  });
 
 
   return (
@@ -64,8 +68,11 @@ const NewPartnerForm = () => {
     >
       <input
         placeholder="Nom de l'associé..."
-        value={formik.value.name}
+        value={formik.values.name}
         // onChange={handleNameChange}
+
+        
+
         onChange={formik.handleChange}
         className={classes.input}
       />
@@ -74,9 +81,11 @@ const NewPartnerForm = () => {
         type="radio"
         id="oui"
         name="spouseValue"
-        value="oui"
+        value={formik.values.spouseValue}
+        // value="oui"
         checked={spouseValue === 'oui'}
-        onChange={handleSpouseChange}
+        // onChange={handleSpouseChange}
+        onChange ={formik.handleChange}
       />
       <label htmlFor="oui">Oui</label>
       <input
@@ -84,15 +93,20 @@ const NewPartnerForm = () => {
         id="non"
         name="spouseValue"
         checked={spouseValue === 'non'}
-        value="non"
-        onChange={handleSpouseChange}
+        value={formik.values.spouseValue}
+        // value="non"
+        // onChange={handleSpouseChange}
+        onChange ={formik.handleChange}
+
       />
       <label htmlFor="nom">Non</label>
       {spouseValue === 'oui' && (
         <input
           placeholder="Nom de l'époux(se)..."
-          value={spouseNameValue}
-          onChange={handleSpouseNameChange}
+          // value={spouseNameValue}
+          value={formik.values.spouseValue}
+          // onChange={handleSpouseNameChange}
+          onChange ={formik.handleChange}
           className={classes.input}
         />
       )}
